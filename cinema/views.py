@@ -90,9 +90,9 @@ class ActorDetail(
 
 class CinemaHallViewSet(
     viewsets.GenericViewSet,
+    mixins.CreateModelMixin,
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
-    mixins.CreateModelMixin,
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin
 ):
