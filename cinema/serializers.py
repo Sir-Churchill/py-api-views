@@ -8,9 +8,10 @@ class MovieSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=255)
     description = serializers.CharField()
     duration = serializers.IntegerField()
-    actors = serializers.PrimaryKeyRelatedField(many=True, queryset=Actor.objects.all())
-    genres = serializers.PrimaryKeyRelatedField(many=True, queryset=Genre.objects.all())
-
+    actors = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Actor.objects.all())
+    genres = serializers.PrimaryKeyRelatedField(
+        many=True, queryset=Genre.objects.all())
 
     def create(self, validated_data):
         return Movie.objects.create(**validated_data)
@@ -21,8 +22,8 @@ class MovieSerializer(serializers.Serializer):
             "description", instance.description
         )
         instance.duration = validated_data.get("duration", instance.duration)
-        instance.actors = validated_data.get("actors", instance.actors)
-        instance.genres = validated_data.get("genres", instance.genres)
+        instance.actors = validated_data.set(validated_data["actors"])
+        instance.genres = validated_data.set(validated_data["genres"])
 
         instance.save()
 
@@ -71,7 +72,7 @@ class CinemaHallSerializer(serializers.Serializer):
         return CinemaHall.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.title = validated_data.get("title", instance.title)
+        instance.name = validated_data.get("name", instance.name)
         instance.rows = validated_data.get("rows", instance.rows)
         instance.seats_in_row = validated_data.get(
             "seats_in_row", instance.seats_in_row)
