@@ -15,6 +15,7 @@ class Genre(models.Model):
     def __str__(self):
         return f"{self.name}"
 
+
 class CinemaHall(models.Model):
     name = models.CharField(max_length=255)
     rows = models.IntegerField()
@@ -33,5 +34,3 @@ class Movie(models.Model):
 
     def __str__(self):
         return self.title
-
-

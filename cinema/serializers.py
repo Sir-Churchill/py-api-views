@@ -8,6 +8,9 @@ class MovieSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=255)
     description = serializers.CharField()
     duration = serializers.IntegerField()
+    actors = serializers.PrimaryKeyRelatedField(many=True, queryset=Actor.objects.all())
+    genres = serializers.PrimaryKeyRelatedField(many=True, queryset=Genre.objects.all())
+
 
     def create(self, validated_data):
         return Movie.objects.create(**validated_data)
@@ -18,6 +21,8 @@ class MovieSerializer(serializers.Serializer):
             "description", instance.description
         )
         instance.duration = validated_data.get("duration", instance.duration)
+        instance.actors = validated_data.get("actors", instance.actors)
+        instance.genres = validated_data.get("genres", instance.genres)
 
         instance.save()
 
@@ -27,7 +32,6 @@ class MovieSerializer(serializers.Serializer):
 class GenreSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=255)
-
 
     def create(self, validated_data):
         return Genre.objects.create(**validated_data)
@@ -47,8 +51,10 @@ class ActorSerializer(serializers.Serializer):
         return Actor.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
-        instance.first_name = validated_data.get("first_name", instance.first_name)
-        instance.last_name = validated_data.get("last_name", instance.last_name)
+        instance.first_name = validated_data.get(
+            "first_name", instance.first_name)
+        instance.last_name = validated_data.get(
+            "last_name", instance.last_name)
 
         instance.save()
 
@@ -67,7 +73,8 @@ class CinemaHallSerializer(serializers.Serializer):
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
         instance.rows = validated_data.get("rows", instance.rows)
-        instance.seats_in_row = validated_data.get("seats_in_row", instance.seats_in_row)
+        instance.seats_in_row = validated_data.get(
+            "seats_in_row", instance.seats_in_row)
 
         instance.save()
 
